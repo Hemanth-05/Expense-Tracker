@@ -83,7 +83,20 @@ Possible enhancements after Version 1:
 - Allow users to select a **custom date range** to view expenses within that period.
 - Add an **AI chatbot** capable of answering questions about expenses by querying the stored data.
 
-## Data Model
+## 8. User Stories
+
+- As a user, I want the application to include default categories so that I can start tracking expenses immediately.
+- As a user, I want to create a new category so that I can organize my expenses based on my needs.
+- As a user, I want to add an expense under a category so that I can record where my money was spent.
+- As a user, I want to optionally specify the purchase date so that I can record expenses that happened earlier.
+- As a user, I want to view a list of all expenses so that I can review my spending history.
+- As a user, I want to update an expense so that I can correct mistakes.
+- As a user, I want to delete an expense so that I can remove incorrect entries.
+- As a user, I want to view expenses for a specific month so that I can track monthly spending.
+- As a user, I want to view expenses for a specific year so that I can analyze yearly spending.
+- As a user, I want to see spending totals by category so that I can understand where most of my money goes.
+
+## 9. Data Model
 
 The application uses two main entities for Version 1:
 
@@ -153,6 +166,192 @@ This means:
   - Expense: Bread — $3
 
 In this example, all three expenses belong to the **Groceries** category.
+
+## 10. API Overview
+
+The backend will expose APIs for managing categories, expenses, and expense summaries.
+
+### Category Endpoints
+
+- `GET /categories`  
+  Fetch all available categories.
+
+- `POST /categories`  
+  Create a new category.
+
+---
+
+### Expense Endpoints
+
+- `GET /expenses`  
+  Fetch all recorded expenses.
+
+- `POST /expenses`  
+  Create a new expense.
+
+- `PUT /expenses/:id`  
+  Update an existing expense by ID.
+
+- `DELETE /expenses/:id`  
+  Delete an existing expense by ID.
+
+---
+
+### Expense Summary Endpoints
+
+- `GET /expenses/month/:yearMonth`  
+  Fetch all expenses for a specific month.  
+  Example: `2026-03`
+
+- `GET /expenses/year/:year`  
+  Fetch all expenses for a specific year.  
+  Example: `2026`
+
+- `GET /expenses/category/:categoryId`  
+  Fetch expenses or spending summary for a specific category.
+
+- `GET /expenses/summary/category`  
+  Fetch total spending grouped by category.
+
+## 11. UI Plan
+
+Version 1 will provide a simple and functional interface focused on recording and reviewing expenses.
+
+### Main UI Sections
+
+#### 1. Expense Entry Form
+The application should include a form for adding a new expense with the following fields:
+
+- Expense name
+- Amount
+- Category dropdown
+- Optional purchase date
+- Submit button
+
+#### 2. Category Management
+The application should allow the user to:
+
+- View default categories in the category dropdown
+- Create a new custom category
+- Use newly created categories when adding expenses
+
+#### 3. Expense List
+The application should display all saved expenses in a list or table.
+
+Each expense entry should show:
+
+- Expense name
+- Amount
+- Category
+- Purchase date
+
+Each expense entry should also include:
+
+- Edit action
+- Delete action
+
+#### 4. Monthly and Yearly View
+The application should allow the user to view expenses for:
+
+- A selected month
+- A selected year
+
+Examples:
+- March 2026
+- April 2026
+- 2025
+- 2026
+
+#### 5. Category Spending View
+The application should allow the user to select a category and view how much has been spent in that category.
+
+### UI Design Notes
+- The interface should remain simple and easy to use.
+- Functionality is prioritized over advanced styling in Version 1.
+- The UI should be designed in a way that makes future additions like charts and analytics easy to integrate.
+
+## 12. System Architecture
+
+The Expense Tracking System will follow a **full-stack layered architecture**. Unlike the Hotel Booking API project, which was backend-only, this application will include both a **frontend** and a **backend**. This approach helps maintain separation of concerns, improves scalability, and makes the application easier to manage.
+
+The system will be divided into the following layers:
+
+### Frontend UI Layer
+Responsible for rendering the user interface and handling user interactions such as adding expenses, selecting categories, and viewing summaries.
+
+### Frontend State / Data Handling Layer
+Manages frontend data such as form inputs, fetched expenses, categories, filters, and loading/error states.
+
+### API Communication Layer
+Handles communication between the frontend and backend through HTTP requests. This layer is responsible for sending requests to the backend API and receiving responses.
+
+### Backend Routing Layer
+Defines API endpoints and maps incoming HTTP requests to the appropriate controller functions.
+
+### Backend Middleware Layer
+Handles cross-cutting concerns such as input validation, authentication, authorization, and request preprocessing before requests reach the controllers.
+
+### Backend Controller Layer
+Handles request and response orchestration. Controllers receive processed requests and delegate business logic execution to the service layer.
+
+### Backend Service Layer
+Contains the core business logic of the application. Services process data and coordinate operations between controllers and repositories.
+
+### Backend Repository Layer
+Encapsulates all database interactions. This layer communicates directly with the database using Prisma ORM.
+
+### Database Layer
+Stores persistent application data such as expenses and categories in PostgreSQL.
+
+---
+
+### Architectural Flow
+
+Client / User  
+↓  
+Frontend UI Layer  
+↓  
+Frontend State / Data Handling Layer  
+↓  
+API Communication Layer  
+↓  
+Backend Routes  
+↓  
+Backend Middleware  
+↓  
+Backend Controllers  
+↓  
+Backend Services  
+↓  
+Backend Repositories  
+↓  
+Database (PostgreSQL)
+
+This architecture promotes **modularity, readability, and maintainability** by clearly separating responsibilities across different layers of the application.
+
+## 13. Project Structure
+expense-tracker/
+│
+├── backend/
+│   ├── routes/
+│   ├── controllers/
+│   ├── services/
+│   ├── repositories/
+│   ├── middleware/
+│   ├── validators/
+│   ├── utils/
+│   └── config/
+│
+├── frontend/
+│   └── src/
+│       ├── components/
+│       ├── pages/
+│       ├── services/
+│       ├── hooks/
+│       └── utils/
+│
+└── prisma/
+    └── schema.prisma
 
 ---
 
