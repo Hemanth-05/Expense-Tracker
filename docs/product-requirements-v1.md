@@ -1,19 +1,19 @@
 # Expense Tracker — V1 Product Requirement
 
-## Product Goal
+## 1. Product Goal
 Build a simple expense tracking application that helps the user understand where their money is going.
 
-## Problem It Solves
+## 2. Problem It Solves
 Many existing expense tracking applications restrict useful features behind premium subscriptions. For example, users may be able to view expenses for the last few months, but viewing a full year's spending or accessing detailed summaries often requires upgrading to a paid plan.
 
 This creates friction for users who simply want to understand their spending habits without committing to a subscription.
 
 To overcome this limitation, this project aims to build a personal expense tracking system that provides full access to essential features such as tracking expenses, categorizing spending, and viewing summaries by category, month, and year without any restrictions.
 
-## Target User
+## 3. Target User
 The target user for V1 is the product creator himself, to personally track and review expenses.
 
-## What V1 Must Do
+## 4. What V1 Must Do
 By the end of V1, the application must allow the user to:
 
 - Create categories
@@ -23,7 +23,7 @@ By the end of V1, the application must allow the user to:
 - See spending for a specific month
 - See spending for a specific year
 
-## What V1 Will Not Do
+## 5. What V1 Will Not Do
 V1 will not include:
 
 - Charts or visual analytics
@@ -32,25 +32,20 @@ V1 will not include:
 - Authentication or multiple users
 - Notifications or reminders
 
-## Core Features (V1)
+## 6. Core Features (V1)
 
 ### Category Management
-- The application will include a set of **default categories** (e.g., Groceries, Entertainment, Transport, Utilities).
+- The application will include a set of **default categories**
+Example categories may include:
+    - Groceries
+    - Dining
+    - Entertainment
+    - Transport
+    - Utilities
+    - Shopping
+    - Miscellaneous
 - Users should be able to **create new custom categories**.
 - Users should be able to **view the list of all available categories**.
-
-#### Default Categories
-The application will include a predefined set of default categories to help users start tracking expenses immediately.
-
-Example default categories:
-
-- Groceries
-- Dining
-- Entertainment
-- Transport
-- Utilities
-- Shopping
-- Miscellaneous
 
 ### Expense Management
 - Users should be able to **add a new expense**.
@@ -76,7 +71,7 @@ Example default categories:
   (e.g., 2026, 2025).
 - Users should be able to **select a category and see the total spending for that category**.
 
-## Future Improvements
+## 7. Future Improvements
 Possible enhancements after Version 1:
 
 - Add charts (e.g., pie charts, bar charts) to visualize spending patterns.

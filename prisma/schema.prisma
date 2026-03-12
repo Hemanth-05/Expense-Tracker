@@ -14,11 +14,15 @@ model Category {
 }
 
 model Expense {
-  id         Int      @id @default(autoincrement())
-  name       String
-  amount     Decimal  @db.Decimal(10,2)
-  createdAt  DateTime @default(now())
+  id          Int       @id @default(autoincrement())
+  name        String
+  amount      Decimal   @db.Decimal(10,2)
 
-  categoryId Int
-  category   Category @relation(fields: [categoryId], references: [id])
+  expenseDate DateTime   // REQUIRED
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  categoryId  Int
+  category    Category  @relation(fields: [categoryId], references: [id])
 }
