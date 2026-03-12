@@ -54,7 +54,12 @@ Example categories may include:
   - Expense name
   - Amount
   - Category
-  - Date
+  - Purchase date (optional)
+
+#### Purchase Date Behavior
+- The purchase date field should be optional when adding an expense.
+- If the user provides a purchase date, that date should be saved as the expense date.
+- If the user leaves the purchase date empty, the system should automatically use the date on which the expense is added.
 
 ### Expense Editing
 - Users should be able to **update an existing expense**.
@@ -77,6 +82,84 @@ Possible enhancements after Version 1:
 - Add charts (e.g., pie charts, bar charts) to visualize spending patterns.
 - Allow users to select a **custom date range** to view expenses within that period.
 - Add an **AI chatbot** capable of answering questions about expenses by querying the stored data.
+
+## Data Model
+
+The application uses two main entities for Version 1:
+
+- **Category**
+- **Expense**
+
+A category is used to organize expenses, and each expense belongs to exactly one category.
+
+---
+
+### Category
+
+Represents an expense category such as Groceries, Entertainment, Transport, etc.
+
+#### Fields
+- **id** — Unique identifier for the category
+- **name** — Name of the category
+- **createdAt** — Date and time when the category was created
+
+#### Notes
+- The application should include a set of default categories.
+- Users should also be able to create custom categories.
+- Each category can be linked to multiple expenses.
+
+---
+
+### Expense
+
+Represents a single recorded expense.
+
+#### Fields
+- **id** — Unique identifier for the expense
+- **name** — Name or title of the expense
+- **amount** — Amount spent
+- **expenseDate** — Date of purchase
+- **createdAt** — Date and time when the expense record was created
+- **updatedAt** — Date and time when the expense record was last updated
+- **categoryId** — Reference to the category under which the expense belongs
+
+#### Notes
+- Every expense must belong to exactly one category.
+- The purchase date is optional from the user’s perspective when adding an expense.
+- If the user provides a purchase date, that date should be stored as the expense date.
+- If the user does not provide a purchase date, the system should automatically use the current date as the expense date.
+- Expenses should support update and delete operations in Version 1.
+
+---
+
+### Relationship
+
+The relationship between the entities is:
+
+- **One Category → Many Expenses**
+- **One Expense → One Category**
+
+This means:
+- A single category can contain multiple expenses.
+- Each expense can belong to only one category.
+
+---
+
+### Example Relationship
+
+- Category: **Groceries**
+  - Expense: Kiwi — $2
+  - Expense: Milk — $5
+  - Expense: Bread — $3
+
+In this example, all three expenses belong to the **Groceries** category.
+
+---
+
+### Design Notes
+- The `amount` field should use a decimal type to ensure accurate storage of money values.
+- The `expenseDate` field should always be stored in the database, even if the user leaves the date input empty during expense creation.
+- Category and Expense are the only required entities for Version 1.
 
 
 ## Document Information
