@@ -32,6 +32,58 @@ V1 will not include:
 - Authentication or multiple users
 - Notifications or reminders
 
+## Core Features (V1)
+
+### Category Management
+- The application will include a set of **default categories** (e.g., Groceries, Entertainment, Transport, Utilities).
+- Users should be able to **create new custom categories**.
+- Users should be able to **view the list of all available categories**.
+
+#### Default Categories
+The application will include a predefined set of default categories to help users start tracking expenses immediately.
+
+Example default categories:
+
+- Groceries
+- Dining
+- Entertainment
+- Transport
+- Utilities
+- Shopping
+- Miscellaneous
+
+### Expense Management
+- Users should be able to **add a new expense**.
+- Each expense must be associated with **one category**.
+- Each expense should include:
+  - Expense name
+  - Amount
+  - Category
+  - Date
+
+### Expense Editing
+- Users should be able to **update an existing expense**.
+- Users should be able to **delete an existing expense**.
+
+### Expense Viewing
+- All recorded expenses should be **displayed in a list**.
+- Users should be able to **view expenses grouped or filtered by category**.
+
+### Spending Summary
+- Users should be able to **view expenses for a specific month**  
+  (e.g., March 2026, April 2026).
+- Users should be able to **view expenses for a specific year**  
+  (e.g., 2026, 2025).
+- Users should be able to **select a category and see the total spending for that category**.
+
+## Future Improvements
+Possible enhancements after Version 1:
+
+- Add charts (e.g., pie charts, bar charts) to visualize spending patterns.
+- Allow users to select a **custom date range** to view expenses within that period.
+- Add an **AI chatbot** capable of answering questions about expenses by querying the stored data.
+
+
 ## Document Information
 **Product Version:** V1  
 **Document Version:** 1.0  
