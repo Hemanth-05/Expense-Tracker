@@ -76,14 +76,12 @@ Example categories may include:
   (e.g., 2026, 2025).
 - Users should be able to **select a category and see the total spending for that category**.
 
-## 7. Future Improvements
-Possible enhancements after Version 1:
+### Design Notes
+- The `amount` field should use a decimal type to ensure accurate storage of money values.
+- The `expenseDate` field should always be stored in the database, even if the user leaves the date input empty during expense creation.
+- Category and Expense are the only required entities for Version 1.
 
-- Add charts (e.g., pie charts, bar charts) to visualize spending patterns.
-- Allow users to select a **custom date range** to view expenses within that period.
-- Add an **AI chatbot** capable of answering questions about expenses by querying the stored data.
-
-## 8. User Stories
+## 7. User Stories
 
 - As a user, I want the application to include default categories so that I can start tracking expenses immediately.
 - As a user, I want to create a new category so that I can organize my expenses based on my needs.
@@ -96,7 +94,7 @@ Possible enhancements after Version 1:
 - As a user, I want to view expenses for a specific year so that I can analyze yearly spending.
 - As a user, I want to see spending totals by category so that I can understand where most of my money goes.
 
-## 9. Data Model
+## 8. Data Model
 
 The application uses two main entities for Version 1:
 
@@ -167,7 +165,7 @@ This means:
 
 In this example, all three expenses belong to the **Groceries** category.
 
-## 10. API Overview
+## 9. API Overview
 
 The backend will expose APIs for managing categories, expenses, and expense summaries.
 
@@ -213,7 +211,7 @@ The backend will expose APIs for managing categories, expenses, and expense summ
 - `GET /expenses/summary/category`  
   Fetch total spending grouped by category.
 
-## 11. UI Plan
+## 10. UI Plan
 
 Version 1 will provide a simple and functional interface focused on recording and reviewing expenses.
 
@@ -270,7 +268,7 @@ The application should allow the user to select a category and view how much has
 - Functionality is prioritized over advanced styling in Version 1.
 - The UI should be designed in a way that makes future additions like charts and analytics easy to integrate.
 
-## 12. System Architecture
+## 11. System Architecture
 
 The Expense Tracking System will follow a **full-stack layered architecture**. Unlike the Hotel Booking API project, which was backend-only, this application will include both a **frontend** and a **backend**. This approach helps maintain separation of concerns, improves scalability, and makes the application easier to manage.
 
@@ -329,7 +327,7 @@ Database (PostgreSQL)
 
 This architecture promotes **modularity, readability, and maintainability** by clearly separating responsibilities across different layers of the application.
 
-## 13. Project Structure
+## 12. Project Structure
 expense-tracker/
 │
 ├── backend/
@@ -355,10 +353,12 @@ expense-tracker/
 
 ---
 
-### Design Notes
-- The `amount` field should use a decimal type to ensure accurate storage of money values.
-- The `expenseDate` field should always be stored in the database, even if the user leaves the date input empty during expense creation.
-- Category and Expense are the only required entities for Version 1.
+## 13. Future Improvements
+Possible enhancements after Version 1:
+
+- Add charts (e.g., pie charts, bar charts) to visualize spending patterns.
+- Allow users to select a **custom date range** to view expenses within that period.
+- Add an **AI chatbot** capable of answering questions about expenses by querying the stored data.
 
 
 ## Document Information
