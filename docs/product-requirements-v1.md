@@ -268,9 +268,6 @@ The system will be divided into the following layers:
 ### Frontend UI Layer
 Responsible for rendering the user interface and handling user interactions such as adding expenses, selecting categories, and viewing summaries.
 
-### Frontend State / Data Handling Layer
-Manages frontend data such as form inputs, fetched expenses, categories, filters, and loading/error states.
-
 ### API Communication Layer
 Handles communication between the frontend and backend through HTTP requests. This layer is responsible for sending requests to the backend API and receiving responses.
 
