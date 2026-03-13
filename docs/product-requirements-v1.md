@@ -188,8 +188,6 @@ The backend will expose APIs for managing categories and expenses.
 
 ### Category Endpoints
 - `GET /categories` — Fetch all available categories
-- `POST /categories` — Create a new category
-- `PATCH /categories/:id` — Update a user-created category
 
 ### Expense Endpoints
 - `GET /expenses` — Fetch all recorded expenses
@@ -346,6 +344,7 @@ expense-tracker/
 Possible enhancements after Version 1:
 
 - Add charts (e.g., pie charts, bar charts) to visualize spending patterns.
+- Creating a custom category
 - Allow users to select a **custom date range** to view expenses within that period.
 - Add an **AI chatbot** capable of answering questions about expenses by querying the stored data.
 

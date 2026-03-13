@@ -1,4 +1,4 @@
-import { createExpense } from '../repositories/expenseRepository.js';
+import { createExpense, getAllExpenses } from '../repositories/expenseRepository.js';
 
 export async function addExpense(payload) {
   const { name, amount, expenseDate, categoryId } = payload || {};
@@ -22,4 +22,8 @@ export async function addExpense(payload) {
   });
 
   return expense;
+}
+
+export async function getExpenses() {
+  return getAllExpenses();
 }
