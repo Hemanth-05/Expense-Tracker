@@ -22,3 +22,6 @@ coverage/
 # Editor settings
 .vscode/
 .idea/
+
+# Notes
+ThingsLearnedInThisProject.md

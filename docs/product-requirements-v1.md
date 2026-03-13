@@ -1,5 +1,22 @@
 # Expense Tracker — V1 Product Requirement
 
+## Table of Contents
+
+1. [Product Goal](#1-product-goal)  
+2. [Problem It Solves](#2-problem-it-solves)  
+3. [Target User](#3-target-user)  
+4. [What V1 Must Do](#4-what-v1-must-do)  
+5. [What V1 Will Not Do](#5-what-v1-will-not-do)  
+6. [Core Features (V1)](#6-core-features-v1)  
+7. [User Stories](#7-user-stories)  
+8. [Data Model](#8-data-model)  
+9. [API Overview](#9-api-overview)  
+10. [UI Plan](#10-ui-plan)  
+11. [System Architecture](#11-system-architecture)  
+12. [Project Structure](#12-project-structure)  
+13. [Future Improvements](#13-future-improvements)  
+14. [Document Information](#14-document-information)
+
 ## 1. Product Goal
 Build a simple expense tracking application that helps the user understand where their money is going.
 
@@ -165,51 +182,25 @@ This means:
 
 In this example, all three expenses belong to the **Groceries** category.
 
-## 9. API Overview
+## API Overview
 
-The backend will expose APIs for managing categories, expenses, and expense summaries.
+The backend will expose APIs for managing categories and expenses.
 
 ### Category Endpoints
-
-- `GET /categories`  
-  Fetch all available categories.
-
-- `POST /categories`  
-  Create a new category.
-
----
+- `GET /categories` — Fetch all available categories
+- `POST /categories` — Create a new category
+- `PATCH /categories/:id` — Update a user-created category
 
 ### Expense Endpoints
+- `GET /expenses` — Fetch all recorded expenses
+- `POST /expenses` — Create a new expense
+- `PATCH /expenses/:id` — Update an existing expense
+- `DELETE /expenses/:id` — Delete an existing expense
 
-- `GET /expenses`  
-  Fetch all recorded expenses.
-
-- `POST /expenses`  
-  Create a new expense.
-
-- `PUT /expenses/:id`  
-  Update an existing expense by ID.
-
-- `DELETE /expenses/:id`  
-  Delete an existing expense by ID.
-
----
-
-### Expense Summary Endpoints
-
-- `GET /expenses/month/:yearMonth`  
-  Fetch all expenses for a specific month.  
-  Example: `2026-03`
-
-- `GET /expenses/year/:year`  
-  Fetch all expenses for a specific year.  
-  Example: `2026`
-
-- `GET /expenses/category/:categoryId`  
-  Fetch expenses or spending summary for a specific category.
-
-- `GET /expenses/summary/category`  
-  Fetch total spending grouped by category.
+### Expense Filter Endpoints
+- `GET /expenses/month/:yearMonth` — Fetch expenses for a specific month
+- `GET /expenses/year/:year` — Fetch expenses for a specific year
+- `GET /expenses/category/:categoryId` — Fetch expenses for a specific category
 
 ## 10. UI Plan
 
@@ -268,7 +259,7 @@ The application should allow the user to select a category and view how much has
 - Functionality is prioritized over advanced styling in Version 1.
 - The UI should be designed in a way that makes future additions like charts and analytics easy to integrate.
 
-## 11. System Architecture
+## 11. System Architecture Overview
 
 The Expense Tracking System will follow a **full-stack layered architecture**. Unlike the Hotel Booking API project, which was backend-only, this application will include both a **frontend** and a **backend**. This approach helps maintain separation of concerns, improves scalability, and makes the application easier to manage.
 
@@ -328,6 +319,8 @@ Database (PostgreSQL)
 This architecture promotes **modularity, readability, and maintainability** by clearly separating responsibilities across different layers of the application.
 
 ## 12. Project Structure
+
+```
 expense-tracker/
 │
 ├── backend/
@@ -350,6 +343,7 @@ expense-tracker/
 │
 └── prisma/
     └── schema.prisma
+```
 
 ---
 
@@ -361,7 +355,7 @@ Possible enhancements after Version 1:
 - Add an **AI chatbot** capable of answering questions about expenses by querying the stored data.
 
 
-## Document Information
+## 14. Document Information
 **Product Version:** V1  
 **Document Version:** 1.0  
 **Status:** In Development
