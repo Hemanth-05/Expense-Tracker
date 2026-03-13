@@ -1,6 +1,5 @@
 import express from 'express';
-// import expenseRoutes from './routes/expenseRoutes.js';
-// import categoryRoutes from './routes/categoryRoutes.js';
+import expenseRoutes from './routes/expenseRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,8 +10,7 @@ app.get('/', (req, res) => {
   res.status(200).json({ message: 'Expense Tracker API is running' });
 });
 
-// app.use('/api/expenses', expenseRoutes);
-// app.use('/api/categories', categoryRoutes);
+app.use('/api/expenses', expenseRoutes);
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');
