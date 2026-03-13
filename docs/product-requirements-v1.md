@@ -182,7 +182,7 @@ This means:
 
 In this example, all three expenses belong to the **Groceries** category.
 
-## API Overview
+## 9. API Overview
 
 The backend will expose APIs for managing categories and expenses.
 
@@ -296,8 +296,6 @@ Stores persistent application data such as expenses and categories in PostgreSQL
 Client / User  
 ↓  
 Frontend UI Layer  
-↓  
-Frontend State / Data Handling Layer  
 ↓  
 API Communication Layer  
 ↓  
