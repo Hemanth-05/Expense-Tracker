@@ -101,7 +101,6 @@ Example categories may include:
 ## 7. User Stories
 
 - As a user, I want the application to include default categories so that I can start tracking expenses immediately.
-- As a user, I want to create a new category so that I can organize my expenses based on my needs.
 - As a user, I want to add an expense under a category so that I can record where my money was spent.
 - As a user, I want to optionally specify the purchase date so that I can record expenses that happened earlier.
 - As a user, I want to view a list of all expenses so that I can review my spending history.
