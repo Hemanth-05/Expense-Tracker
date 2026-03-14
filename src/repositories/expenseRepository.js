@@ -45,3 +45,10 @@ export async function getAllExpenses() {
     },
   });
 }
+
+export async function deleteExpenseById(id) {
+  return prisma.expense.delete({
+    where: { id },
+    select: { id: true },
+  });
+}
