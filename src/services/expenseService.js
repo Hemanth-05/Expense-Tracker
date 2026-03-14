@@ -1,4 +1,5 @@
-import { createExpense, getAllExpenses } from '../repositories/expenseRepository.js';
+import { Prisma } from '@prisma/client';
+import { createExpense, deleteExpenseById, getAllExpenses } from '../repositories/expenseRepository.js';
 
 export async function addExpense(payload) {
   const { name, amount, expenseDate, categoryId } = payload || {};
@@ -26,4 +27,27 @@ export async function addExpense(payload) {
 
 export async function getExpenses() {
   return getAllExpenses();
+}
+
+export async function deleteExpense(payload) {
+  const { id } = payload || {};
+  const expenseId = Number(id);
+
+  if (!Number.isInteger(expenseId) || expenseId <= 0) {
+    const error = new Error('Invalid expense id');
+    error.status = 400;
+    throw error;
+  }
+
+  try {
+    const deleted = await deleteExpenseById(expenseId);
+    return deleted;
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      const notFound = new Error('Expense not found');
+      notFound.status = 404;
+      throw notFound;
+    }
+    throw error;
+  }
 }
