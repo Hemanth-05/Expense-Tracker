@@ -1,39 +1,6 @@
 import { body, validationResult } from 'express-validator';
 import { getCategoryById } from '../repositories/categoryRepository.js';
 
-function formatMissingFields(fields) {
-  if (fields.length === 1) return fields[0];
-  if (fields.length === 2) return `${fields[0]} and ${fields[1]}`;
-  return `${fields.slice(0, -1).join(', ')}, and ${fields[fields.length - 1]}`;
-}
-
-function missingRequiredFieldValidator(req, res, next) {
-  const body = req.body || {};
-  const missing = [];
-
-  if (body.name === undefined || body.name === null || (typeof body.name === 'string' && !body.name.trim())) {
-    missing.push('name');
-  }
-
-  if (body.amount === undefined || body.amount === null || `${body.amount}`.trim() === '') {
-    missing.push('amount');
-  }
-
-  if (body.categoryId === undefined || body.categoryId === null || `${body.categoryId}`.trim() === '') {
-    missing.push('categoryId');
-  }
-
-  if (missing.length > 0) {
-    const error = new Error(
-      `Missing required fields: ${formatMissingFields(missing)}`
-    );
-    error.status = 400;
-    return next(error);
-  }
-
-  return next();
-}
-
 async function categoryExists(value) {
   const category = await getCategoryById(value);
   if (!category) {
@@ -43,21 +10,25 @@ async function categoryExists(value) {
 }
 
 export const validateCreateExpense = [
-  missingRequiredFieldValidator,
-
   body('name')
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage('required')
     .trim()
     .notEmpty()
-    .withMessage('Invalid name: must be a non-empty string')
+    .withMessage('required')
     .custom((value) => Number.isNaN(Number(value)))
     .withMessage('Invalid name: must not be only numeric'),
 
   body('amount')
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage('required')
     .toFloat()
     .isFloat({ gt: 0 })
     .withMessage('Invalid amount: must be a positive number'),
 
   body('categoryId')
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage('required')
     .toInt()
     .isInt({ gt: 0 })
     .withMessage('Invalid categoryId: must be a positive integer')
@@ -73,7 +44,22 @@ export const validateCreateExpense = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error(errors.array()[0].msg);
+      const formattedErrors = errors.array();
+      const missing = formattedErrors.filter((error) => error.msg === 'required').map((error) => error.path);
+      if (missing.length > 0) {
+        const orderedMissing = ['name', 'amount', 'categoryId'].filter((field) => missing.includes(field));
+        const joined =
+          orderedMissing.length === 1
+            ? orderedMissing[0]
+            : orderedMissing.length === 2
+              ? `${orderedMissing[0]} and ${orderedMissing[1]}`
+              : `${orderedMissing[0]}, ${orderedMissing[1]}, and ${orderedMissing[2]}`;
+        const error = new Error(`Missing required fields: ${joined}`);
+        error.status = 400;
+        return next(error);
+      }
+
+      const error = new Error(formattedErrors[0].msg);
       error.status = 400;
       return next(error);
     }
