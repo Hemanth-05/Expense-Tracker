@@ -212,7 +212,7 @@ The application should include a form for adding a new expense with the followin
 - Amount
 - Category dropdown
 - Optional purchase date
-- Submit button
+- Submit button (Add Expense)
 
 #### 2. Category Management
 The application should allow the user to:
