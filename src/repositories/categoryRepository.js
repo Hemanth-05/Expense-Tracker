@@ -7,3 +7,11 @@ export async function getCategoryByName(name) {
 export async function getCategoryById(id) {
   return prisma.category.findUnique({ where: { id } });
 }
+
+export async function getAllCategories() {
+  return prisma.category.findMany({
+    orderBy: {
+      name: 'asc',
+    },
+  });
+}
