@@ -1,4 +1,4 @@
-import { body, validationResult } from 'express-validator';
+import { body, oneOf, validationResult } from 'express-validator';
 import { getCategoryById } from '../repositories/categoryRepository.js';
 
 async function categoryExists(value) {
@@ -10,6 +10,14 @@ async function categoryExists(value) {
 }
 
 export const validateCreateExpense = [
+  oneOf(
+    [
+      [body('expenseDate').not().exists()],
+      [body('expenseDate').isISO8601().withMessage('Invalid expenseDate: must be a valid date').toDate()],
+    ],
+    'Invalid expenseDate: must be a valid date'
+  ),
+
   body('name')
     .exists({ checkNull: true, checkFalsy: true })
     .withMessage('required')
@@ -35,31 +43,25 @@ export const validateCreateExpense = [
     .bail()
     .custom(categoryExists),
 
-  body('expenseDate')
-    .optional()
-    .isISO8601()
-    .withMessage('Invalid expenseDate: must be a valid date')
-    .toDate(),
-
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const formattedErrors = errors.array();
-      const missing = formattedErrors.filter((error) => error.msg === 'required').map((error) => error.path);
+      const missing = formattedErrors
+        .filter((error) => error.msg === 'required')
+        .map((error) => error.path);
       if (missing.length > 0) {
-        const orderedMissing = ['name', 'amount', 'categoryId'].filter((field) => missing.includes(field));
-        const joined =
-          orderedMissing.length === 1
-            ? orderedMissing[0]
-            : orderedMissing.length === 2
-              ? `${orderedMissing[0]} and ${orderedMissing[1]}`
-              : `${orderedMissing[0]}, ${orderedMissing[1]}, and ${orderedMissing[2]}`;
+        const orderedMissing = ['name', 'amount', 'categoryId'].filter((field) =>
+          missing.includes(field)
+        );
+        const joined = orderedMissing.join(', ').replace(/, ([^,]*)$/, ' and $1');
         const error = new Error(`Missing required fields: ${joined}`);
         error.status = 400;
         return next(error);
       }
 
-      const error = new Error(formattedErrors[0].msg);
+      const firstError = formattedErrors[0];
+      const error = new Error(firstError.msg === 'Invalid value' ? 'Invalid request payload' : firstError.msg);
       error.status = 400;
       return next(error);
     }
