@@ -1,4 +1,4 @@
-import { addExpense, deleteExpense, getExpenses } from '../services/expenseService.js';
+import { addExpense, deleteExpense, getExpenses, patchExpense } from '../services/expenseService.js';
 
 export async function createExpenseController(req, res, next) {
   try {
@@ -22,6 +22,18 @@ export async function deleteExpenseController(req, res, next) {
   try {
     const deleted = await deleteExpense({ id: req.params.id });
     res.status(204).json(deleted);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function patchExpenseController(req, res, next) {
+  try {
+    const expense = await patchExpense({
+      id: req.params.id,
+      ...req.validatedExpense,
+    });
+    res.status(200).json(expense);
   } catch (error) {
     next(error);
   }
