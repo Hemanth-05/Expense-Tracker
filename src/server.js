@@ -1,5 +1,6 @@
 import express from 'express';
 import expenseRoutes from './routes/expenseRoutes.js';
+import categoryRoutes from './routes/categoryRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,6 +12,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/expenses', expenseRoutes);
+app.use('/api/categories', categoryRoutes);
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');
