@@ -76,3 +76,65 @@ export const validateCreateExpense = [
     return next();
   },
 ];
+
+export const validateUpdateExpense = [
+  body('name')
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage('Invalid name: must be a non-empty string')
+    .custom((value) => Number.isNaN(Number(value)))
+    .withMessage('Invalid name: must not be only numeric'),
+
+  body('amount')
+    .optional()
+    .toFloat()
+    .isFloat({ gt: 0 })
+    .withMessage('Invalid amount: must be a positive number'),
+
+  body('categoryId')
+    .optional()
+    .toInt()
+    .isInt({ gt: 0 })
+    .withMessage('Invalid categoryId: must be a positive integer')
+    .bail()
+    .custom(categoryExists),
+
+  body('expenseDate')
+    .optional()
+    .isISO8601()
+    .withMessage('Invalid expenseDate: must be a valid date')
+    .toDate(),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error = new Error(errors.array()[0].msg);
+      error.status = 400;
+      return next(error);
+    }
+
+    const payload = {};
+    if (req.body.name !== undefined) {
+      payload.name = req.body.name.trim();
+    }
+    if (req.body.amount !== undefined) {
+      payload.amount = req.body.amount;
+    }
+    if (req.body.categoryId !== undefined) {
+      payload.categoryId = req.body.categoryId;
+    }
+    if (req.body.expenseDate !== undefined) {
+      payload.expenseDate = req.body.expenseDate;
+    }
+
+    if (Object.keys(payload).length === 0) {
+      const error = new Error('At least one of name, amount, categoryId, or expenseDate is required for update');
+      error.status = 400;
+      return next(error);
+    }
+
+    req.validatedExpense = payload;
+    next();
+  },
+];

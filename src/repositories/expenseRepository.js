@@ -52,3 +52,24 @@ export async function deleteExpenseById(id) {
     select: { id: true },
   });
 }
+
+export async function updateExpenseById({ id, data }) {
+  return prisma.expense.update({
+    where: { id },
+    data,
+    select: {
+      id: true,
+      name: true,
+      amount: true,
+      expenseDate: true,
+      createdAt: true,
+      updatedAt: true,
+      category: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+  });
+}
