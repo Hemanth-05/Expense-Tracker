@@ -60,7 +60,6 @@ Example categories may include:
     - Utilities
     - Shopping
     - Miscellaneous
-- Users should be able to **create new custom categories**.
 - Users should be able to **view the list of all available categories**.
 
 ### Expense Management
