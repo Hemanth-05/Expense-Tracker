@@ -13,7 +13,6 @@ The goal of this project is to build a simple yet practical system that helps us
 ## Features (Version 1)
 
 - Default expense categories available at startup
-- Ability to create custom categories
 - Add new expenses with name, amount, category, and optional purchase date
 - View a list of all recorded expenses
 - Update or delete existing expenses
