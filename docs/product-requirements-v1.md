@@ -33,7 +33,6 @@ The target user for V1 is the product creator himself, to personally track and r
 ## 4. What V1 Must Do
 By the end of V1, the application must allow the user to:
 
-- Create categories
 - Add expenses under a category
 - View saved expenses
 - See total spending by category
