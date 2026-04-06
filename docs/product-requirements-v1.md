@@ -106,7 +106,7 @@ Example categories may include:
 - As a user, I want to delete an expense so that I can remove incorrect entries.
 - As a user, I want to view expenses for a specific month so that I can track monthly spending.
 - As a user, I want to view expenses for a specific year so that I can analyze yearly spending.
-- As a user, I want to see spending totals by category so that I can understand where most of my money goes.
+- As a user, I want to see spending totals by category so that I can understand where most of my money goes. Along with category, I should also be able to add in month and year if I want
 
 ## 8. Data Model
 
@@ -193,9 +193,11 @@ The backend will expose APIs for managing categories and expenses.
 - `DELETE /expenses/:id` — Delete an existing expense
 
 ### Expense Filter Endpoints
-- `GET /expenses/month/:yearMonth` — Fetch expenses for a specific month
-- `GET /expenses/year/:year` — Fetch expenses for a specific year
-- `GET /expenses/category/:categoryId` — Fetch expenses for a specific category
+- `GET /api/expenses?month=your_month&year=your_year` - Fetch expenses for a specific month and year using `expenseDate`
+- `GET /api/expenses?year=your_year` - Fetch expenses for a specific year using `expenseDate`
+- `GET /api/expenses?categoryId=your_categoryId` - Fetch expenses for a specific category
+- `GET /api/expenses?month=your_month&year=your_year&categoryId=your_categoryId` - Fetch expenses for a specific category in a specific month and year
+- `GET /api/expenses?year=your_year&categoryId=your_categoryId` - Fetch expenses for a specific category in a specific year
 
 ## 10. UI Plan
 
