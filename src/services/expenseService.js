@@ -30,8 +30,22 @@ export async function addExpense(payload) {
   return expense;
 }
 
-export async function getExpenses() {
-  return getAllExpenses();
+export async function getExpenses(payload = {}) {
+  const { month, year } = payload;
+
+  if (month === undefined && year === undefined) {
+    return getAllExpenses();
+  }
+
+  const startOfMonth = new Date(year, month - 1, 1);
+  const startOfNextMonth = new Date(year, month, 1);
+
+  return getAllExpenses({
+    expenseDate: {
+      gte: startOfMonth,
+      lt: startOfNextMonth,
+    },
+  });
 }
 
 export async function deleteExpense(payload) {
