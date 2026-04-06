@@ -90,6 +90,14 @@ export const validateExpenseFilters = [
     .isInt({ min: 1900, max: 9999 })
     .withMessage('Invalid year: must be a 4-digit year'),
 
+  query('categoryId')
+    .optional()
+    .toInt()
+    .isInt({ gt: 0 })
+    .withMessage('Invalid categoryId: must be a positive integer')
+    .bail()
+    .custom(categoryExists),
+
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -115,6 +123,10 @@ export const validateExpenseFilters = [
 
     if (hasYear) {
       req.validatedExpenseFilters.year = req.query.year;
+    }
+
+    if (req.query.categoryId !== undefined) {
+      req.validatedExpenseFilters.categoryId = req.query.categoryId;
     }
 
     return next();
