@@ -1,4 +1,4 @@
-import { body, oneOf, validationResult } from 'express-validator';
+import { body, oneOf, query, validationResult } from 'express-validator';
 import { getCategoryById } from '../repositories/categoryRepository.js';
 
 async function categoryExists(value) {
@@ -72,6 +72,47 @@ export const validateCreateExpense = [
       categoryId: req.body.categoryId,
       expenseDate: req.body.expenseDate,
     };
+
+    return next();
+  },
+];
+
+export const validateExpenseFilters = [
+  query('month')
+    .optional()
+    .toInt()
+    .isInt({ min: 1, max: 12 })
+    .withMessage('Invalid month: must be an integer between 1 and 12'),
+
+  query('year')
+    .optional()
+    .toInt()
+    .isInt({ min: 1900, max: 9999 })
+    .withMessage('Invalid year: must be a 4-digit year'),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error = new Error(errors.array()[0].msg);
+      error.status = 400;
+      return next(error);
+    }
+
+    const hasMonth = req.query.month !== undefined;
+    const hasYear = req.query.year !== undefined;
+
+    if (hasMonth !== hasYear) {
+      const error = new Error('Both month and year are required together');
+      error.status = 400;
+      return next(error);
+    }
+
+    req.validatedExpenseFilters = {};
+
+    if (hasMonth && hasYear) {
+      req.validatedExpenseFilters.month = req.query.month;
+      req.validatedExpenseFilters.year = req.query.year;
+    }
 
     return next();
   },

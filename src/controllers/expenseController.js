@@ -11,7 +11,7 @@ export async function createExpenseController(req, res, next) {
 
 export async function getExpensesController(req, res, next) {
   try {
-    const expenses = await getExpenses();
+    const expenses = await getExpenses(req.validatedExpenseFilters);
     res.status(200).json(expenses);
   } catch (error) {
     next(error);

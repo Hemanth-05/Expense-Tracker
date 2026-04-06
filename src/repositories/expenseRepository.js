@@ -24,10 +24,11 @@ export async function createExpense({ name, amount, expenseDate, categoryId }) {
   });
 }
 
-export async function getAllExpenses() {
+export async function getAllExpenses(where = {}) {
   return prisma.expense.findMany({
+    where,
     orderBy: {
-      createdAt: 'desc',
+      expenseDate: 'desc',
     },
     select: {
       id: true,
