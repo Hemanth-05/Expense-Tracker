@@ -32,13 +32,27 @@ export async function addExpense(payload) {
 
 export async function getExpenses(payload = {}) {
   const { month, year } = payload;
+  const parsedMonth = month !== undefined ? Number(month) : undefined;
+  const parsedYear = year !== undefined ? Number(year) : undefined;
 
-  if (month === undefined && year === undefined) {
+  if (parsedMonth === undefined && parsedYear === undefined) {
     return getAllExpenses();
   }
 
-  const startOfMonth = new Date(year, month - 1, 1);
-  const startOfNextMonth = new Date(year, month, 1);
+  if (parsedMonth === undefined) {
+    const startOfYear = new Date(parsedYear, 0, 1);
+    const startOfNextYear = new Date(parsedYear + 1, 0, 1);
+
+    return getAllExpenses({
+      expenseDate: {
+        gte: startOfYear,
+        lt: startOfNextYear,
+      },
+    });
+  }
+
+  const startOfMonth = new Date(parsedYear, parsedMonth - 1, 1);
+  const startOfNextMonth = new Date(parsedYear, parsedMonth, 1);
 
   return getAllExpenses({
     expenseDate: {
