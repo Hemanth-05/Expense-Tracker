@@ -101,16 +101,19 @@ export const validateExpenseFilters = [
     const hasMonth = req.query.month !== undefined;
     const hasYear = req.query.year !== undefined;
 
-    if (hasMonth !== hasYear) {
-      const error = new Error('Both month and year are required together');
+    if (hasMonth && !hasYear) {
+      const error = new Error('Year is required when month is provided');
       error.status = 400;
       return next(error);
     }
 
     req.validatedExpenseFilters = {};
 
-    if (hasMonth && hasYear) {
+    if (hasMonth) {
       req.validatedExpenseFilters.month = req.query.month;
+    }
+
+    if (hasYear) {
       req.validatedExpenseFilters.year = req.query.year;
     }
 
