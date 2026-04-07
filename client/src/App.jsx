@@ -28,6 +28,24 @@ function formatDate(value) {
   return new Date(value).toISOString().slice(0, 10);
 }
 
+function PencilIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24">
+      <path d="M4 16.75V20h3.25L17.1 10.15l-3.25-3.25L4 16.75z" />
+      <path d="M18.35 8.9l1.2-1.2a1.4 1.4 0 0 0 0-1.98l-1.27-1.27a1.4 1.4 0 0 0-1.98 0l-1.2 1.2 3.25 3.25z" />
+    </svg>
+  );
+}
+
+function TrashIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24">
+      <path d="M7 21a2 2 0 0 1-2-2V8h14v11a2 2 0 0 1-2 2H7z" />
+      <path d="M9 4h6l1 2h4v2H4V6h4l1-2z" />
+    </svg>
+  );
+}
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [form, setForm] = useState({
@@ -41,6 +59,14 @@ export default function App() {
     year: '',
     categoryId: '',
   });
+  const [editForm, setEditForm] = useState({
+    id: '',
+    name: '',
+    amount: '',
+    expenseDate: '',
+    categoryId: '',
+  });
+  const [editingExpense, setEditingExpense] = useState(null);
   const [categories, setCategories] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
@@ -49,12 +75,20 @@ export default function App() {
   const [expenseError, setExpenseError] = useState('');
   const [submitError, setSubmitError] = useState('');
   const [submitMessage, setSubmitMessage] = useState('');
+  const [editError, setEditError] = useState('');
 
   const totalAmount = expenses.reduce((total, expense) => total + Number(expense.amount || 0), 0);
 
   const handleFormChange = (event) => {
     setForm({
       ...form,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleEditFormChange = (event) => {
+    setEditForm({
+      ...editForm,
       [event.target.name]: event.target.value,
     });
   };
@@ -156,6 +190,76 @@ export default function App() {
 
     setFilters(emptyFilters);
     await loadExpenses(emptyFilters);
+  };
+
+  const handleOpenEdit = (expense) => {
+    setEditError('');
+    setEditingExpense(expense);
+    setEditForm({
+      id: expense.id,
+      name: expense.name,
+      amount: String(expense.amount),
+      expenseDate: formatDate(expense.expenseDate),
+      categoryId: String(expense.category?.id || ''),
+    });
+  };
+
+  const handleCloseEdit = () => {
+    setEditingExpense(null);
+    setEditError('');
+  };
+
+  const handleEditSubmit = async (event) => {
+    event.preventDefault();
+    setEditError('');
+
+    try {
+      const response = await fetch(`/api/expenses/${editForm.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: editForm.name,
+          amount: Number(editForm.amount),
+          categoryId: Number(editForm.categoryId),
+          expenseDate: editForm.expenseDate,
+        }),
+      });
+
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(payload?.error || 'Failed to update expense');
+      }
+
+      setEditingExpense(null);
+      await loadExpenses();
+    } catch (error) {
+      setEditError(error.message);
+    }
+  };
+
+  const handleDeleteExpense = async (expense) => {
+    const shouldDelete = window.confirm(`Delete "${expense.name}"?`);
+    if (!shouldDelete) return;
+
+    setExpenseError('');
+
+    try {
+      const response = await fetch(`/api/expenses/${expense.id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const payload = await response.json();
+        throw new Error(payload?.error || 'Failed to delete expense');
+      }
+
+      await loadExpenses();
+    } catch (error) {
+      setExpenseError(error.message);
+    }
   };
 
   useEffect(() => {
@@ -346,18 +450,123 @@ export default function App() {
             <div className="expense-list">
               {expenses.map((expense) => (
                 <article className="expense-item" key={expense.id}>
-                  <div>
+                  <div className="expense-details">
                     <h3>{expense.name}</h3>
                     <p>
                       {expense.category?.name || 'Uncategorized'} · {formatDate(expense.expenseDate)}
                     </p>
                   </div>
-                  <strong>{formatCurrency(expense.amount)}</strong>
+                  <div className="expense-row-actions">
+                    <strong>{formatCurrency(expense.amount)}</strong>
+                    <button
+                      className="icon-button"
+                      type="button"
+                      aria-label={`Edit ${expense.name}`}
+                      onClick={() => handleOpenEdit(expense)}
+                    >
+                      <PencilIcon />
+                    </button>
+                    <button
+                      className="icon-button danger"
+                      type="button"
+                      aria-label={`Delete ${expense.name}`}
+                      onClick={() => handleDeleteExpense(expense)}
+                    >
+                      <TrashIcon />
+                    </button>
+                  </div>
                 </article>
               ))}
             </div>
           </section>
         </section>
+      )}
+
+      {editingExpense && (
+        <div className="modal-backdrop" role="presentation">
+          <section
+            className="edit-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="edit-expense-title"
+          >
+            <button
+              className="close-button"
+              type="button"
+              aria-label="Close edit expense modal"
+              onClick={handleCloseEdit}
+            >
+              X
+            </button>
+            <h2 id="edit-expense-title">Edit Expense</h2>
+
+            {editError && <p className="error-text">{editError}</p>}
+
+            <form className="edit-form" onSubmit={handleEditSubmit}>
+              <label>
+                <span>Category</span>
+                <select
+                  name="categoryId"
+                  value={editForm.categoryId}
+                  onChange={handleEditFormChange}
+                  required
+                >
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <div className="input-row">
+                <label>
+                  <span>Expense Name</span>
+                  <input
+                    name="name"
+                    type="text"
+                    value={editForm.name}
+                    onChange={handleEditFormChange}
+                    required
+                  />
+                </label>
+
+                <label>
+                  <span>Amount</span>
+                  <input
+                    name="amount"
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    value={editForm.amount}
+                    onChange={handleEditFormChange}
+                    required
+                  />
+                </label>
+              </div>
+
+              <label>
+                <span>Date</span>
+                <input
+                  name="expenseDate"
+                  type="date"
+                  value={editForm.expenseDate}
+                  onChange={handleEditFormChange}
+                  required
+                />
+              </label>
+
+              <div className="modal-actions">
+                <button className="secondary-button" type="button" onClick={handleCloseEdit}>
+                  Cancel
+                </button>
+                <button className="primary-button compact" type="submit">
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
       )}
     </main>
   );
