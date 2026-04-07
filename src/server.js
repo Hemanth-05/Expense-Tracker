@@ -5,7 +5,9 @@ import categoryRoutes from './routes/categoryRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const allowedOrigins = ['http://localhost:5173', process.env.CLIENT_URL].filter(Boolean);
+const allowedOrigins = ['http://localhost:5173', process.env.CLIENT_URL]
+  .filter(Boolean)
+  .map((origin) => origin.replace(/\/$/, ''));
 
 app.use(cors({
   origin(origin, callback) {
