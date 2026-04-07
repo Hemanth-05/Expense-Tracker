@@ -65,6 +65,14 @@ Detailed product requirements and system design are available in the project doc
 
 ---
 
+## 📦 Deployment
+
+See detailed deployment guide here:
+
+👉 [Deployment Notes](./docs/deployment.md)
+
+---
+
 ## License
 
 This project is intended for learning and experimentation purposes.
