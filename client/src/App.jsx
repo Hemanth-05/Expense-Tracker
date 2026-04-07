@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { apiUrl } from './api';
 
 const months = [
   { value: '', label: 'All' },
@@ -118,7 +119,7 @@ export default function App() {
       }
 
       const queryString = params.toString();
-      const response = await fetch(`/api/expenses${queryString ? `?${queryString}` : ''}`);
+      const response = await fetch(apiUrl(`/api/expenses${queryString ? `?${queryString}` : ''}`));
       const payload = await response.json();
 
       if (!response.ok) {
@@ -149,7 +150,7 @@ export default function App() {
     }
 
     try {
-      const response = await fetch('/api/expenses', {
+      const response = await fetch(apiUrl('/api/expenses'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -214,7 +215,7 @@ export default function App() {
     setEditError('');
 
     try {
-      const response = await fetch(`/api/expenses/${editForm.id}`, {
+      const response = await fetch(apiUrl(`/api/expenses/${editForm.id}`), {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -247,7 +248,7 @@ export default function App() {
     setExpenseError('');
 
     try {
-      const response = await fetch(`/api/expenses/${expense.id}`, {
+      const response = await fetch(apiUrl(`/api/expenses/${expense.id}`), {
         method: 'DELETE',
       });
 
@@ -265,7 +266,7 @@ export default function App() {
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        const response = await fetch('/api/categories');
+        const response = await fetch(apiUrl('/api/categories'));
         const payload = await response.json();
         if (!response.ok) {
           throw new Error(payload?.error || 'Failed to load categories');
