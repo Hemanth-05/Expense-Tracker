@@ -7,5 +7,5 @@
     "strict": false,
     "types": ["vite/client"]
   },
-  "include": ["src"]
+  "include": ["index.html", "vite.config.js", "src"]
 }
