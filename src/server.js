@@ -1,10 +1,21 @@
 import express from 'express';
+import cors from 'cors';
 import expenseRoutes from './routes/expenseRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const allowedOrigins = ['http://localhost:5173', process.env.CLIENT_URL].filter(Boolean);
 
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(null, false);
+  },
+}));
 app.use(express.json());
 
 app.get('/', (req, res) => {
