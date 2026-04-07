@@ -1,4 +1,3 @@
-```md
 # 🚀 Deployment Guide – Expense Tracker
 
 ## 🧠 Overview
@@ -223,4 +222,3 @@ app.use(
 * Backend: (Add your Render URL here)
 
 ---
-```
