@@ -1,10 +1,15 @@
 # Expense Tracker
 
-![Status](https://img.shields.io/badge/status-in%20development-yellow)
+![Status](https://img.shields.io/badge/status-live-success)
+
+## 🔗 Live Application
+
+- **Frontend:** https://expense-tracker-nine-alpha-57.vercel.app
+- **Backend API:** https://expense-tracker-j6e0.onrender.com
 
 ## Overview
 
-Expense Tracker is a full-stack application designed to help users record, organize, and analyze their spending. The application allows users to categorize expenses, view spending history, and analyze expenses by month, year, or category.
+A production-ready full-stack expense tracking application that enables users to record, organize, and analyze their spending with real-time insights.
 
 The goal of this project is to build a simple yet practical system that helps users understand where their money is going without relying on subscription-based expense tracking applications.
 
@@ -12,13 +17,15 @@ The goal of this project is to build a simple yet practical system that helps us
 
 ## Features (Version 1)
 
-- Default expense categories available at startup
-- Add new expenses with name, amount, category, and optional purchase date
-- View a list of all recorded expenses
-- Update or delete existing expenses
-- View expenses for a specific month
-- View expenses for a specific year
-- View expenses filtered by category
+- Predefined expense categories loaded from database
+- Create, update, and delete expenses (full CRUD support)
+- Filter expenses by:
+  - Month
+  - Year
+  - Category
+  - Combined filters (e.g., month + category)
+- View total spending based on applied filters
+- Responsive UI with real-time data from backend API
 
 ---
 
@@ -31,19 +38,46 @@ The goal of this project is to build a simple yet practical system that helps us
 - PostgreSQL
 
 ### Frontend
-- React
+- React (Vite)
 
-### Tools
+### Tools & Platforms
 - Git
 - Postman
+- Vercel (Frontend Hosting)
+- Render (Backend Hosting)
+- Neon (PostgreSQL Database)
 
 ---
 
+## 🏗️ Architecture
+
+The backend follows a layered architecture:
+
+- Routes → API endpoints
+- Controllers → Request/response handling
+- Services → Business logic
+- Repositories → Database access
+- Middleware → Validation and cross-cutting concerns
+
+The frontend communicates with the backend via REST APIs, and the backend interacts with PostgreSQL using Prisma ORM.
+
+For detailed system design, see:
+👉 [Product Requirements](./docs/product-requirements-V1.md)
+
 ## Project Status
 
-🚧 This project is currently under development.
+✅ Version 1 is complete and deployed.
 
-Version 1 focuses on implementing the core expense tracking functionality including category management, expense recording, and expense filtering by time and category.
+The application supports full expense tracking functionality including CRUD operations, filtering by time and category, and a responsive frontend interface connected to a production backend.
+
+---
+
+## 💡 Key Learnings
+
+- Designed and deployed a full-stack application across multiple services
+- Handled cross-origin communication (CORS) in a production environment
+- Managed environment variables across frontend and backend deployments
+- Built scalable backend architecture using layered design principles
 
 ---
 
